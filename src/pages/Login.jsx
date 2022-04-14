@@ -7,10 +7,18 @@ import { actionCreators as userActions } from "../redux/modules/user";
 const Login = (props) => {
   const dispatch = useDispatch();
   // console.log(getCookie("user_id"));
+
+  const [id, setId] = React.useState();
+  const [pwd, setPwd] = React.useState();
+  if (id === "" || pwd === "") {
+    window.alert("아이디 혹은 비밀번호가 공란입니다. 입력해주세요.");
+    return;
+  }
   const login = () => {
-    dispatch(userActions.loginAction({ user_name: "Kelly" }));
     // setCookie("user_id", "algoroot", 3);
     // setCookie("user_pwd", "ppp", 3);
+    // dispatch(userActions.loginAction({ user_name: "Kelly" }));
+    dispatch(userActions.loginFB(id, pwd));
   };
   return (
     <Grid padding="16px">
@@ -21,8 +29,9 @@ const Login = (props) => {
         <Input
           label="아이디"
           placeholder="아이디를 입력해주세요."
-          _onChange={() => {
+          _onChange={(e) => {
             console.log("아이디입력중");
+            setId(e.target.value);
           }}
         />
       </Grid>
@@ -31,8 +40,10 @@ const Login = (props) => {
         <Input
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요."
-          _onChange={() => {
+          type="password"
+          _onChange={(e) => {
             console.log("비밀번호입력중");
+            setPwd(e.target.value);
           }}
         />
       </Grid>
