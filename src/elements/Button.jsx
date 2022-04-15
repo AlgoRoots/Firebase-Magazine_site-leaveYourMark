@@ -1,31 +1,75 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Button = (props) => {
-  const { text, _onClick, size, btnColor } = props;
+  const { text, _onClick, children, size, btnColor, is_add, margin, width } =
+    props;
+
+  const styles = {
+    margin: margin,
+    width: width,
+    btnColor: btnColor,
+    size: size,
+  };
+
+  if (is_add) {
+    return (
+      <React.Fragment>
+        <RoundBtn {...styles} onClick={_onClick}>
+          {children}
+        </RoundBtn>
+      </React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
-      <ElButton {...props} onClick={_onClick}>
-        {text}
+      <ElButton {...styles} onClick={_onClick}>
+        {text ? text : children}
       </ElButton>
     </React.Fragment>
   );
 };
 
 Button.defaultProps = {
-  text: "text",
+  children: null,
+  text: false,
   _onClick: () => {},
   size: "16px",
   btnColor: "#666666",
+  is_add: false,
+  margin: false,
+  width: "100%",
 };
 
+const Btn = css`
+  cursor: pointer;
+  border: none;
+`;
+
 const ElButton = styled.button`
+  ${Btn};
   font-size: ${(props) => props.size};
-  width: 100%;
+  width: ${(props) => props.width};
+  ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
   background: ${(props) => props.btnColor};
   color: #fff;
   padding: 12px 0;
   box-sizing: border-box;
   border: none;
+`;
+
+const RoundBtn = styled.button`
+  ${Btn};
+  background: ${(props) => props.btnColor};
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  vertical-align: middle;
+  padding-top: 5px;
 `;
 export default Button;

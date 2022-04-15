@@ -3,10 +3,11 @@ import React from "react";
 import profile_img from "../algoroot_profile.jpg";
 
 const Image = (props) => {
-  const { shape, src, size } = props;
+  const { shape, src, size, preview_img } = props;
   const styles = {
     src: src,
     size: size,
+    preview_img: preview_img,
   };
 
   if (shape === "circle") {
@@ -28,6 +29,7 @@ Image.defaultProps = {
   shape: "circle",
   src: profile_img,
   size: 36,
+  preview_img: false,
 };
 
 const AspectOutter = styled.div`
@@ -38,7 +40,14 @@ const AspectInner = styled.div`
   position: relative;
   padding-top: 75%;
   overflow: hidden;
+
   background: url("${(props) => props.src}") 0 -120px;
+
+  ${(props) =>
+    props.preview_img
+      ? `  background-position:  0;`
+      : `  background-position: 0 -120px;`}
+
   background-size: cover;
 `;
 

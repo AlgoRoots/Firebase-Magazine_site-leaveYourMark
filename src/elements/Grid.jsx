@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Grid = (props) => {
-  const { is_flex, width, margin, padding, bg, children } = props;
+  const { is_flex, width, margin, padding, bg, children, center } = props;
 
   // children 왜 있지? 그리드가 밖에 있어서 안에 컴포넌트들이 들어간다는 의미인가
   const styles = {
@@ -12,6 +12,7 @@ const Grid = (props) => {
     padding,
     padding,
     bg: bg,
+    center: center,
   };
   return (
     <React.Fragment>
@@ -27,6 +28,7 @@ Grid.defaultProps = {
   padding: false,
   margin: false,
   bg: false,
+  center: false,
 };
 
 const GridBox = styled.div`
@@ -40,5 +42,6 @@ const GridBox = styled.div`
     props.is_flex
       ? `display: flex; align-items: center; justify-content: space-between`
       : ""}
+  ${(props) => (props.center ? `text-align: center;` : "")}
 `;
 export default Grid;
