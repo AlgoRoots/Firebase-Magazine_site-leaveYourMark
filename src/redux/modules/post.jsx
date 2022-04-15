@@ -9,15 +9,20 @@ import { firestore, storage } from "../../shared/firebase";
 // 자바스크립트에서 날짜, 시간 객체를 편히 다루기 위한 패키지
 import moment from "moment";
 
-import { actionCreactors as imageActions } from "./image";
+import { actionCreators as imageActions } from "./image";
 
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
+const EDIT_POST = "EDIT_POST";
 
 // action 생성자 함수
 
 const setPost = createAction(SET_POST, (post_list) => ({ post_list }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
+const editPost = createAction(EDIT_POST, (post_id, post) => ({
+  post_id,
+  post,
+}));
 
 // 리듀서가 사용할 initialstate
 const initialState = {
@@ -59,6 +64,7 @@ const addPostFB = (contents = "") => {
     const _image = getState().image.preview;
     console.log(_image);
     console.log(typeof _image);
+
     const _upload = storage
       .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
       .putString(_image, "data_url");
@@ -157,6 +163,63 @@ const getPostFB = () => {
   };
 };
 
+//
+const editPostFB = (post_id = null, post = {}) => {
+  return function (dispatch, getState, { history }) {
+    if (!post_id) {
+      console.log("게시물 정보가 없어요! ");
+      return;
+    }
+    const _image = getState().image.preview;
+
+    const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
+    const _post = getState().post.list[_post_idx];
+    console.log(_post);
+
+    const postDB = firestore.collection("post");
+    if (_image === _post.image_url) {
+      postDB
+        .doc(post_id)
+        .update(post)
+        .then((doc) => {
+          dispatch(editPost(post_id, { ...post }));
+          history.replace("/");
+        });
+      return;
+    } else {
+      // 이미지 바꾸기
+
+      const user_id = getState().user.user.uid;
+      const _upload = storage
+        .ref(`images/${user_id}_${new Date().getTime()}`)
+        .putString(_image, "data_url");
+
+      // data url로 바뀜 , 이 안에서 add
+      _upload.then((snapshot) => {
+        snapshot.ref
+          .getDownloadURL()
+          .then((url) => {
+            console.log(url);
+
+            return url;
+          })
+          .then((url) => {
+            postDB
+              .doc(post_id)
+              .update({ ...post, image_url: url })
+              .then((doc) => {
+                dispatch(editPost(post_id, { ...post, image_url: url }));
+                history.replace("/");
+              });
+          })
+          .catch((err) => {
+            window.alert("이미지 업로드에 문제가 있어요!");
+            console.log("이미지 업로드에 문제가 있어요!", err);
+          });
+      });
+    }
+  };
+};
 // reducer
 export default handleActions(
   {
@@ -169,6 +232,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.list.unshift(action.payload.post);
       }),
+    [EDIT_POST]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.list.findIndex((p) => p.id === action.payload.post_id);
+
+        // spread 쓴 이유 : 이미지 수정 안할 경우, contents만 수정할 경우!
+        draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
+      }),
   },
   initialState
 );
@@ -179,6 +249,7 @@ const actionCreators = {
   addPost,
   getPostFB,
   addPostFB,
+  editPostFB,
 };
 
 export { actionCreators };

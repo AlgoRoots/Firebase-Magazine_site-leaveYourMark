@@ -2,14 +2,24 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const Button = (props) => {
-  const { text, _onClick, children, size, btnColor, is_add, margin, width } =
-    props;
+  const {
+    text,
+    _onClick,
+    children,
+    size,
+    btnColor,
+    is_add,
+    margin,
+    width,
+    padding,
+  } = props;
 
   const styles = {
     margin: margin,
     width: width,
     btnColor: btnColor,
     size: size,
+    padding: padding,
   };
 
   if (is_add) {
@@ -40,6 +50,7 @@ Button.defaultProps = {
   is_add: false,
   margin: false,
   width: "100%",
+  padding: "12px 0",
 };
 
 const Btn = css`
@@ -54,7 +65,7 @@ const ElButton = styled.button`
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
   background: ${(props) => props.btnColor};
   color: #fff;
-  padding: 12px 0;
+  padding: ${(props) => props.padding};
   box-sizing: border-box;
   border: none;
 `;

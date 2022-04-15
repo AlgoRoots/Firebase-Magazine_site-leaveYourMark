@@ -33,6 +33,7 @@ const uploadImageFB = (image) => {
     });
   };
 };
+
 export default handleActions(
   {
     [UPLOAD_IMAGE]: (state, action) =>
@@ -53,10 +54,10 @@ export default handleActions(
   initialState
 );
 
-const actionCreactors = {
+const actionCreators = {
   uploadImage,
   uploadImageFB,
   setPreview,
 };
 
-export { actionCreactors };
+export { actionCreators };

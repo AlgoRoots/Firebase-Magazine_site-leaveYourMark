@@ -3,7 +3,7 @@ import { Button } from "../elements";
 import { storage } from "./firebase";
 
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreactors as imageActions } from "../redux/modules/image";
+import { actionCreators as imageActions } from "../redux/modules/image";
 
 const Upload = (props) => {
   const dispatch = useDispatch();

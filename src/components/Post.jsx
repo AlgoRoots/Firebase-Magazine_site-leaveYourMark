@@ -3,7 +3,8 @@ import profile_img from "../algoroot_profile.jpg";
 // import Grid from "../elements/Grid";
 // import Image from "../elements/Image";
 // import Text from "../elements/Text";
-import { Grid, Image, Text } from "../elements";
+import { Button, Grid, Image, Text } from "../elements";
+import { history } from "../redux/configureStore";
 
 const Post = (props) => {
   return (
@@ -16,6 +17,18 @@ const Post = (props) => {
           </Grid>
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>
+            {props.is_me && (
+              <Button
+                width="auto"
+                margin="4px"
+                padding="4px"
+                _onClick={() => {
+                  history.push(`/write/${props.id}`);
+                }}
+              >
+                수정
+              </Button>
+            )}
           </Grid>
         </Grid>
         <Grid padding="16px"></Grid>
@@ -42,5 +55,6 @@ Post.defaultProps = {
   contents: "념념이",
   coment_cnt: 10,
   insert_dt: "2022-04-12 10:00:00",
+  is_me: false,
 };
 export default Post;
