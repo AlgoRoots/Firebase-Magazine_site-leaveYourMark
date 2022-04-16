@@ -8,6 +8,7 @@ import logger from "redux-logger";
 import User from "./modules/user";
 import Post from "./modules/post";
 import Image from "./modules/image";
+import Comment from "./modules/comment";
 
 // store에 history 넣어주기  : 리덕스에서 사용하기 위함 > roothistory 에 넣어줌
 export const history = createBrowserHistory();
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   user: User,
   post: Post,
   image: Image,
+  comment: Comment,
   // 만든 history와 router가 연결이 되고 store에 브라우저히스토리 같은게 다 저장된다.
   router: connectRouter(history),
 });

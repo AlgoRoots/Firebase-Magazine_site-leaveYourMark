@@ -17,6 +17,7 @@ const Post = (props) => {
           </Grid>
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>
+            {/* is_me user id 와 post의 userid 가 같으면 수정버튼 보여준다.  */}
             {props.is_me && (
               <Button
                 width="auto"
@@ -31,14 +32,17 @@ const Post = (props) => {
             )}
           </Grid>
         </Grid>
-        <Grid padding="16px"></Grid>
-        <Text>{props.contents}</Text>
+        <Grid padding="16px">
+          {" "}
+          <Text>{props.contents}</Text>
+        </Grid>
+
         <Grid>
           <Image shape="rectangle" src={props.image_url} />
         </Grid>
         <Grid padding="16px">
           <Text margin="0px" bold>
-            댓글 {props.coment_cnt}개
+            댓글 {props.comment_cnt}개
           </Text>
         </Grid>
       </Grid>
