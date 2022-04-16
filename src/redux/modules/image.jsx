@@ -22,7 +22,10 @@ const uploadImageFB = (image) => {
   return function (dispatch, getState, { history }) {
     dispatch(uploading(true));
     const _upload = storage.ref(`images/${image.name}`).put(image);
-
+    console.log(
+      "Upload에서 받아오고 업로드 버튼 눌렀을 때 받아오는 read.result",
+      image
+    );
     _upload.then((snapshot) => {
       console.log(snapshot);
       console.log("Uploaded a file!");

@@ -31,41 +31,57 @@ const initialState = {
 
 // Post 하나에 대한 들어있는 정보
 const initialPost = {
-  // id: 0,
-  // user_info: {
-  //   user_name: "algoroot",
-  //   user_profile: profile_img,
-  // },
   image_url: profile_img,
   contents: "",
   coment_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
-  //insert_dt: "2022-04-12 10:00:00",
 };
 
 const addPostFB = (contents = "") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
-    // getState()는 store에 있는 user 가져옴
-    const _user = getState().user.user;
 
+    const _user = getState().user.user;
+    // console.log("setUser!!!",_user);
+
+    // getState()는 store에 있는user 가져와준다.
+    // setUser로 생성한 session 정보
+
+    // id: "cc@cc.com"
+    // uid: "GfqOcoismnVlroqVfxomqd5Sgvo2"
+    // user_name: "성혜"
+    // user_profile: ""
+
+    // user_info 딕셔너리형태로 user분류하기
     const user_info = {
       user_name: _user.user_name,
       user_id: _user.uid,
       user_profile: _user.user_profile,
     };
+
     const _post = {
+      // 기존 초기값
       ...initialPost,
+      // 포스트 작성시 적은 contents새로 넣어준다.
       contents: contents,
+      // 생성시 날짜시간
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
     };
 
     // 업로드한 이미지 작성하기 버튼 누르면 스토어에 저장하기
     const _image = getState().image.preview;
-    console.log(_image);
-    console.log(typeof _image);
+    // console.log(_image);
+    // console.log(typeof _image);
+
+    ////////////////////////////////////
+    ///////// 이후 FB 문법 변경 ///////////
+    ////////////////////////////////////
+
+    // firestore storage에서 이미지 가져오기 (firesotre 문자열(string)에서 업로드 )
+    // https://firebase.google.com/docs/storage/web/upload-files?hl=ko&authuser=0#web-version-8_3
 
     const _upload = storage
+      // ref(~) 파일 이름 중복 방지 위해 user_id, 현재 시간을 ms로 넣어준다.
       .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
       .putString(_image, "data_url");
 
@@ -74,19 +90,25 @@ const addPostFB = (contents = "") => {
       snapshot.ref
         .getDownloadURL()
         .then((url) => {
-          console.log(url);
-
+          // url 잘 만들어졌는지 확인
+          // console.log(url);
           return url;
         })
         .then((url) => {
+          // return 된  url 잘 들어왔는지 확인
+          // console.log(url);
+
+          // firebase "post" DB에 정보 넣기
           postDB
             .add({ ...user_info, ..._post, image_url: url })
             .then((doc) => {
+              // 성공시 > 아이디 추가
               let post = { user_info, ..._post, id: doc.id, image_url: url };
+              // 가공한 post 데이터 addPost()해준다.
               dispatch(addPost(post));
               history.replace("/");
 
-              // preview 이미지 다시 null로 해준다. 400x300이미지로 바뀌게
+              // preview 이미지 다시 null로 해준다.(400x300이미지로)
               dispatch(imageActions.setPreview(null));
             })
             .catch((err) => {
@@ -104,24 +126,36 @@ const addPostFB = (contents = "") => {
 
     // console.log({ ...user_info, ..._post });
   };
-
-  // 데이터 추가하기
 };
 
 const getPostFB = () => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
 
+    ////////////////////////////////////
+    ///////// 이후 FB 문법 변경 ///////////
+    ////////////////////////////////////
+
     postDB.get().then((docs) => {
       let post_list = [];
 
       docs.forEach((doc) => {
-        // 잘 가져왔나 확인하기! :)
-        // 앗! DB에서 가져온 것하고 우리가 Post 컴포넌트에서 쓰는 데이터 모양새가 다르네요!
-        // console.log(doc.id, doc.data());
+        // 잘 가져왔나 확인
+        // console.log("다르냐?", doc.id, doc.data());
+
+        // coment_cnt: 0
+        // contents: "케이크조아!!😀"
+        // image_url: "https://firebasestorage.googleapis.com/v0/b/react-deep-99.appspot.com/o/images%2FGfqOcoismnVlroqVfxomqd5Sgvo2_1650044228069?alt=media&token=d94d02ce-85ea-4bde-84b7-27cb329d938b"
+        // insert_dt: "2022-04-16 12:02:32"
+        // user_id: "GfqOcoismnVlroqVfxomqd5Sgvo2"
+        // user_name: "성혜"
+        // user_profile: ""
+
+        // DB에서 가져온 것하고 우리가 Post 컴포넌트에서 쓰는 데이터 모양새 다름
 
         let _post = doc.data();
 
+        // 데이터 모양 맞추기
         // ['comment_cnt' , 'contents, ...]
         let post = Object.keys(_post).reduce(
           (acc, cur) => {
@@ -133,43 +167,36 @@ const getPostFB = () => {
             }
             return { ...acc, [cur]: _post[cur] };
           },
+          // 랜덤 배정된 doc.id 추가
           { id: doc.id, user_info: {} }
         );
-
-        // let _post = {
-        //   id: doc.id,
-        //   ...doc.data(),
-        // };
-
-        // let post = {
-        //   id: doc.id,
-        //   user_info: {
-        //     user_name: _post.user_name,
-        //     user_profile: _post.user_profile,
-        //     user_id: _post.user_id,
-        //   },
-        //   image_url: _post.image_url,
-        //   contents: _post.contents,
-        //   coment_cnt: _post.comment_cnt,
-        //   insert_dt: _post.insert_dt,
-        // };
         post_list.push(post);
       });
 
-      // 리스트 확인하기!
-      // console.log("fbfbfb", post_list);
+      // 리스트 확인하기
+      //console.log("리스트 잘 가져왔니? ", post_list);
+      // >>
+      // id 추가, user_info에 user_관련 정보 담김
+      // id: "b1CcR1w10zAyHtig58vg"
+      // user_info: {user_profile: '', user_id: 'GfqOcoismnVlroqVfxomqd5Sgvo2', user_name: '성혜'}
+
+      // 가공한 Post_list setPost를 통해 배열에 넘겨준다.
       dispatch(setPost(post_list));
     });
   };
 };
 
-//
-const editPostFB = (post_id = null, post = {}) => {
+// 받아온게 post 가 아니라 contents가 맞지 않나..? ????????????
+const editPostFB = (post_id = null, contents = {}) => {
+  // console.log("나는 뭘 받아왔나 contents인데 ? ", contents);
   return function (dispatch, getState, { history }) {
+    // id가 없으면 return
     if (!post_id) {
       console.log("게시물 정보가 없어요! ");
       return;
     }
+
+    // image.js 에서 가져온 Preview
     const _image = getState().image.preview;
 
     const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
@@ -180,15 +207,14 @@ const editPostFB = (post_id = null, post = {}) => {
     if (_image === _post.image_url) {
       postDB
         .doc(post_id)
-        .update(post)
+        .update(contents)
         .then((doc) => {
-          dispatch(editPost(post_id, { ...post }));
+          dispatch(editPost(post_id, { ...contents }));
           history.replace("/");
         });
       return;
     } else {
       // 이미지 바꾸기
-
       const user_id = getState().user.user.uid;
       const _upload = storage
         .ref(`images/${user_id}_${new Date().getTime()}`)

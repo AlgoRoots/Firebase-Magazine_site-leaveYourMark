@@ -19,16 +19,16 @@ const Signup = (props) => {
       return;
     }
 
-    if(!emailCheck(id)){
-      window.alert('이메일 형식이 맞지 않습니다!');
+    if (!emailCheck(id)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
       return;
     }
-    
+
     if (pwd !== pwd_check) {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
       return;
     }
-
+    // user 리덕스 signupFB에 id, pwd, user_name 넘겨줌
     dispatch(userActions.signupFB(id, pwd, user_name));
   };
   return (
