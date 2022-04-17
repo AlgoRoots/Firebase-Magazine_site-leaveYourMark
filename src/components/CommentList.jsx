@@ -9,7 +9,7 @@ import { actionCreators as commentActions } from "../redux/modules/comment";
 const CommentList = (props) => {
   const dispatch = useDispatch();
   const comment_list = useSelector((state) => state.comment.list);
-  console.log(comment_list);
+  //console.log(comment_list);
 
   const { post_id } = props;
 
@@ -48,9 +48,10 @@ const CommentItem = (props) => {
   return (
     <Grid is_flex>
       <Grid is_flex width="auto">
-        <Image shape="circle" />
+        <Image shape="circle" src={props.src} />
         <Text bold>{user_name}</Text>
       </Grid>
+
       <Grid is_flex margin="0px 4px">
         <Text margin="0px">{contents}</Text>
         <Text margin="0px">{insert_dt}</Text>

@@ -33,7 +33,7 @@ const CommentWrite = (props) => {
           placeholder="댓글 내용을 입력해주세요 :)"
           _onChange={onChange}
           value={comment_text}
-          is_Submit
+          is_submit
           onSubmit={write}
         />
         <Button width="50px" margin="0px 2px" _onClick={write}>

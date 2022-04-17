@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { firestore } from "../../shared/firebase";
+import { firestore, realtime } from "../../shared/firebase";
 import "moment";
 import moment from "moment";
 
@@ -31,7 +31,7 @@ const initialState = {
 // 댓글 추가
 const addCommentFB = (post_id, contents) => {
   return function (dispatch, getState, { history }) {
-    /// FB 문법 /////
+    ///// FB 문법 /////
     const commentDB = firestore.collection("comment");
     const user_info = getState().user.user;
 
@@ -77,6 +77,32 @@ const addCommentFB = (post_id, contents) => {
                 // 묵시적 형변환 방지, parseInt로 바로 숫자로 바꿔준다.
                 comment_cnt: parseInt(post.comment_cnt) + 1,
               })
+            );
+
+            // 댓글 달기 성공시 알림 설정
+            // post에는 user uid 가 아래경로에 있다.
+            const _noti_item = realtime
+              // 알림 리스트에 하나 추가
+              .ref(`noti/${post.user_info.user_id}/list`)
+              .push();
+
+            _noti_item.set(
+              {
+                post_id: post.id,
+                user_name: comment.user_name,
+                image_url: post.image_url,
+                insert_dt: comment.insert_dt,
+              },
+              (err) => {
+                if (err) {
+                  console.log("알림 저장 실패");
+                } else {
+                  // 읽음 상태를 false로 바꿔준다.
+                  // 현재는 모든게 내 게시글이라서 내가 쓴 글도 알람이 가게 된다. 나중에 조건 달기
+                  const notiDB = realtime.ref(`noti/${post.user_info.user_id}`);
+                  notiDB.update({ read: false });
+                }
+              }
             );
           }
         });

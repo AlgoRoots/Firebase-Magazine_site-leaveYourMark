@@ -8,6 +8,8 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { apiKey } from "../shared/firebase";
 
+import NotiBadge from "./NotiBadge";
+
 const Header = (props) => {
   const dispatch = useDispatch();
   // 로그인 유무에 따른 헤더 모양
@@ -32,12 +34,17 @@ const Header = (props) => {
         {is_login && is_session ? (
           <Grid is_flex>
             <Button text="내정보" btnColor="#686ef3"></Button>
-            <Button
+            <NotiBadge
+              _onClick={() => {
+                history.push("/noti");
+              }}
+            />
+            {/* <Button
               text="알림"
               _onClick={() => {
                 history.push("/noti");
               }}
-            ></Button>
+            ></Button> */}
             <Button
               text="로그아웃"
               _onClick={() => {

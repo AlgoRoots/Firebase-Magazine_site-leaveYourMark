@@ -10,8 +10,7 @@ const Grid = (props) => {
     is_flex: is_flex,
     width: width,
     margin: margin,
-    padding,
-    padding,
+    padding: padding,
     bg: bg,
     center: center,
   };
