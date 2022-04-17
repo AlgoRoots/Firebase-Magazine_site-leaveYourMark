@@ -214,7 +214,7 @@ const getPostFB = (start = null, size = 3) => {
             // 랜덤 배정된 doc.id 추가
             { id: doc.id, user_info: {} }
           );
-          console.log("query!! startAt > paging > query> post", post);
+          //console.log("query!! startAt > paging > query> post", post);
           post_list.push(post);
         });
 

@@ -6,7 +6,8 @@ import profile_img from "../algoroot_profile.jpg";
 import { Button, Grid, Image, Text } from "../elements";
 import { history } from "../redux/configureStore";
 
-const Post = (props) => {
+const Post = React.memo((props) => {
+  console.log("hi!!! post!!");
   return (
     <React.Fragment>
       <Grid>
@@ -48,7 +49,7 @@ const Post = (props) => {
       </Grid>
     </React.Fragment>
   );
-};
+});
 
 Post.defaultProps = {
   user_info: {
