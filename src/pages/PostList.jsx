@@ -51,7 +51,7 @@ const PostList = (props) => {
                     history.push(`/post/${p.id}`);
                   }}
                 >
-                  <Post {...p} is_me />
+                  <Post {...p} />
                 </Grid>
               );
             }

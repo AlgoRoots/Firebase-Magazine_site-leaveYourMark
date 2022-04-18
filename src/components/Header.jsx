@@ -14,6 +14,8 @@ const Header = (props) => {
   const dispatch = useDispatch();
   // 로그인 유무에 따른 헤더 모양
   const is_login = useSelector((state) => state.user.is_login);
+  // const is = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state.user.user);
 
   //  firebase apiKey
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
@@ -26,8 +28,16 @@ const Header = (props) => {
     <React.Fragment>
       <Grid is_flex padding="4px 16px">
         <Grid>
-          <Text margin="0px" size="24px" bold>
-            헬로
+          <Text
+            cursor="pointer"
+            margin="0px"
+            size="24px"
+            bold
+            _onClick={() => {
+              history.push("/");
+            }}
+          >
+            Good day, {is_login ? user.user_name : "guest"} 🐣
           </Text>
         </Grid>
 

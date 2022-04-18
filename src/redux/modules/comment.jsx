@@ -12,13 +12,17 @@ const ADD_COMMENT = "ADD_COMMENT";
 
 const LOADING = "LOADING";
 
+// action 생성
+// 댓글 셋팅 생성함수
 const setComment = createAction(SET_COMMENT, (post_id, comment_list) => ({
   post_id,
   comment_list,
 }));
-const addComment = createAction(ADD_COMMENT, (post_id, comment) => ({
+
+// 댓글 추가 생성함수
+const addComment = createAction(ADD_COMMENT, (post_id, contents) => ({
   post_id,
-  comment,
+  contents,
 }));
 
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
@@ -147,7 +151,7 @@ export default handleActions(
       }),
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.list[action.payload.post_id].unshift(action.payload.comment);
+        draft.list[action.payload.post_id].unshift(action.payload.contents);
       }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {

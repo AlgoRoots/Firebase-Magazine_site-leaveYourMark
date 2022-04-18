@@ -15,6 +15,7 @@ const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
 const LOADING = "LOADING";
+const DELETE_POST = "DELETE_POST";
 
 // action 생성자 함수
 
@@ -29,6 +30,7 @@ const editPost = createAction(EDIT_POST, (post_id, post) => ({
 }));
 
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
 // 리듀서가 사용할 initialstate
 const initialState = {
@@ -44,10 +46,12 @@ const initialPost = {
   image_url: profile_img,
   contents: "",
   comment_cnt: 0,
+  like_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+  layout: "default",
 };
 
-const addPostFB = (contents = "") => {
+const addPostFB = (contents = "", layout = "default") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
 
@@ -74,6 +78,7 @@ const addPostFB = (contents = "") => {
       ...initialPost,
       // 포스트 작성시 적은 contents새로 넣어준다.
       contents: contents,
+      layout: layout,
       // 생성시 날짜시간
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
     };
@@ -328,6 +333,23 @@ const editPostFB = (post_id = null, contents = {}) => {
     }
   };
 };
+
+const deletePostFB = (post_id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post");
+    postDB
+      .doc(post_id)
+      .delete()
+      .then(() => {
+        history.replace("/");
+        dispatch(deletePost(post_id));
+      })
+      .catch((err) => {
+        console.log("post 삭제 실패", err);
+      });
+  };
+};
+
 // reducer
 export default handleActions(
   {
@@ -372,6 +394,12 @@ export default handleActions(
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
       }),
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = draft.list.filter(
+          (post) => post.id !== action.payload.post_id
+        );
+      }),
   },
   initialState
 );
@@ -385,6 +413,7 @@ const actionCreators = {
   addPostFB,
   editPostFB,
   getOnePostFB,
+  deletePostFB,
 };
 
 export { actionCreators };

@@ -29,7 +29,6 @@ const PostWrite = (props) => {
   const { history } = props;
 
   // _post가 있으면 수정모드이다. 존재하면 그 contents가 나오게, 아니라면 작성페이지이므로 비워둔다.
-  const [contents, setContents] = React.useState(_post ? _post.contents : "");
 
   // firebase 에 넣어주지않고 리덕스 정보로 이용하기 때문에 새로고침하면 리덕스 데이터 날아간다.
   // 후처리 해줘야함 // 렌더 처음할 때 한번만 해주면 됨
@@ -48,20 +47,32 @@ const PostWrite = (props) => {
     }
   }, []);
 
-  const changeContents = (e) => {
-    setContents(e.target.value);
-  };
+  const [contents, setContents] = React.useState(_post ? _post.contents : "");
+  const [layout, setLayout] = React.useState(_post ? _post.layout : "default");
 
   const addPost = () => {
     // addPostFB에 contents state값을 넘겨준다. // post.jsx > 66line => const _post~
     // 넘겨줄 때 image모듈의 setPreview(null); 로 바꿔줘서 새로 작성할시 기본 이미지 유지되게 해줌
     // 가져간 state값을 리듀서작업 통해 initalPost 업데이트됨
-    dispatch(postActions.addPostFB(contents));
+    dispatch(postActions.addPostFB(contents, layout));
   };
 
   const editPost = () => {
     // editPostFB에 contents state값을 넘겨준다. post자체가 아닌 contents만 넘겨주고 있음 !
-    dispatch(postActions.editPostFB(post_id, { contents: contents }));
+    dispatch(postActions.editPostFB(post_id, { contents: contents, layout }));
+  };
+
+  const is_checked = (e) => {
+    if (e.target.value) {
+      // console.log(e.target.value);
+      setLayout(e.target.value);
+    }
+  };
+
+  console.log("layout", layout);
+
+  const changeContents = (e) => {
+    setContents(e.target.value);
   };
 
   if (!is_login) {
@@ -89,31 +100,97 @@ const PostWrite = (props) => {
         </Text>
         {/* Upload :  이미지 파일 따로 가공해 받아옴 */}
         <Upload />
+        <Text size="24px" bold>
+          레이아웃 선택
+        </Text>
+        <select onChange={is_checked}>
+          <option value="default">Default</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
       </Grid>
+      {/*  */}
+      {layout === "default" && (
+        <>
+          <Grid>
+            <Grid padding="16px">
+              <Text margin="0px" size="24px" bold>
+                미리보기
+              </Text>
+            </Grid>
+            <Image
+              shape="rectangle"
+              preview_img
+              src={preview ? preview : "http://via.placeholder.com/400x300"}
+            />
+          </Grid>
 
-      <Grid>
-        <Grid padding="16px">
-          <Text margin="0px" size="24px" bold>
-            미리보기
-          </Text>
-        </Grid>
-        <Image
-          shape="rectangle"
-          preview_img
-          src={preview ? preview : "http://via.placeholder.com/400x300"}
-        />
-      </Grid>
+          <Grid padding="16px">
+            <Input
+              value={contents}
+              _onChange={changeContents}
+              label="게시글 내용"
+              placeholder="게시글 작성"
+              multiLine
+            />
+          </Grid>
+        </>
+      )}
 
-      <Grid padding="16px">
-        <Input
-          value={contents}
-          _onChange={changeContents}
-          label="게시글 내용"
-          placeholder="게시글 작성"
-          multiLine
-        />
-      </Grid>
+      {layout === "left" && (
+        <>
+          <Grid>
+            <Grid padding="16px">
+              <Text margin="0px" size="24px" bold>
+                미리보기
+              </Text>
+            </Grid>
+          </Grid>
 
+          <Grid padding="16px" is_flex>
+            <Image
+              shape="rectangle"
+              preview_img
+              src={preview ? preview : "http://via.placeholder.com/400x300"}
+            />
+            <Input
+              value={contents}
+              _onChange={changeContents}
+              label="게시글 내용"
+              placeholder="게시글 작성"
+              multiLine
+            />
+          </Grid>
+        </>
+      )}
+
+      {layout === "right" && (
+        <>
+          <Grid>
+            <Grid padding="16px">
+              <Text margin="0px" size="24px" bold>
+                미리보기
+              </Text>
+            </Grid>
+          </Grid>
+
+          <Grid padding="16px" is_flex>
+            <Input
+              value={contents}
+              _onChange={changeContents}
+              label="게시글 내용"
+              placeholder="게시글 작성"
+              multiLine
+            />
+            <Image
+              shape="rectangle"
+              preview_img
+              src={preview ? preview : "http://via.placeholder.com/400x300"}
+            />
+          </Grid>
+        </>
+      )}
+      {/*  */}
       <Grid padding="16px">
         {is_edit ? (
           <Button text="게시글 수정" _onClick={editPost}></Button>

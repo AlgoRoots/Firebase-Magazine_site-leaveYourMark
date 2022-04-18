@@ -1,11 +1,15 @@
 import React from "react";
 import { Grid, Text, Input, Button } from "../elements";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { emailCheck } from "../shared/common";
 
 const Signup = (props) => {
+  // 로그인했을 시 홈으로 가기
+  const { history } = props;
+  const is_login = useSelector((state) => state.user.is_login);
+
   const dispatch = useDispatch();
 
   const [id, setId] = React.useState("");
@@ -31,6 +35,24 @@ const Signup = (props) => {
     // user 리덕스 signupFB에 id, pwd, user_name 넘겨줌
     dispatch(userActions.signupFB(id, pwd, user_name));
   };
+
+  if (is_login) {
+    return (
+      <Grid margin="100px 0" padding="16px" center>
+        <Text size="32px" bold>
+          앗 ! 잠깐!
+        </Text>
+        <Text size="16px">이미 로그인을 하셨어요🐥</Text>
+        <Button
+          _onClick={() => {
+            history.replace("/");
+          }}
+        >
+          Home으로 가기
+        </Button>
+      </Grid>
+    );
+  }
   return (
     <React.Fragment>
       <Grid padding="16px">
