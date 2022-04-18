@@ -22,7 +22,7 @@ const Post = React.memo((props) => {
   // console.log("hi!!! post!!");
   const dispatch = useDispatch();
   const like_list = useSelector((state) => state.like.list);
-  console.log("like list!!!", like_list);
+  console.log("like list!!!", like_list, typeof like_list);
   const post_id = props.id;
 
   const deletePost = () => {
