@@ -61,7 +61,9 @@ const PostWrite = (props) => {
 
   const editPost = () => {
     // editPostFB에 contents state값을 넘겨준다. post자체가 아닌 contents만 넘겨주고 있음 !
-    dispatch(postActions.editPostFB(post_id, { contents: contents, layout }));
+    dispatch(
+      postActions.editPostFB(post_id, { contents: contents, layout: layout })
+    );
   };
 
   const is_checked = (e) => {

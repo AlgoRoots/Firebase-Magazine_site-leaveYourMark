@@ -319,9 +319,9 @@ const editPostFB = (post_id = null, contents = {}) => {
           .then((url) => {
             postDB
               .doc(post_id)
-              .update({ ...post, image_url: url })
+              .update({ ...contents, image_url: url })
               .then((doc) => {
-                dispatch(editPost(post_id, { ...post, image_url: url }));
+                dispatch(editPost(post_id, { ...contents, image_url: url }));
                 history.replace("/");
               });
           })
