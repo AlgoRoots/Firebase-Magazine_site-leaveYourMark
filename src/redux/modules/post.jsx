@@ -350,43 +350,6 @@ const deletePostFB = (post_id) => {
   };
 };
 
-//like
-const likePostFB = (post_id = null, like_status = false) => {
-  return function (dispatch, getState, { history }) {
-    const _user = getState().user.user;
-
-    const postDBRef = firestore.collection("post").doc(post_id);
-
-    if (!like_status) {
-      const increment = firebase.firestore.FieldValue.increment(1);
-
-      postDBRef
-        .update({
-          like: firebase.firestore.FieldValue.arrayUnion(_user.uid),
-          like_cnt: increment,
-        })
-        .then((doc) => {
-          dispatch(likePost(post_id, _user.uid, true));
-          history.replace("/");
-        });
-    } else {
-      const increment = firebase.firestore.FieldValue.increment(-1);
-
-      postDBRef
-        .update({
-          like: firebase.firestore.FieldValue.arrayRemove(_user.uid),
-          like_cnt: increment,
-        })
-        .then((doc) => {
-          dispatch(likePost(post_id, _user.uid, false));
-          history.replace("/");
-        });
-    }
-
-    return;
-  };
-};
-
 // reducer
 export default handleActions(
   {

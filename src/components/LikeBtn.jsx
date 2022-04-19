@@ -48,7 +48,7 @@ const LikeBtn = (props) => {
       dispatch(likeActions.undoLikeFB(post_id));
     }
   };
-  console.log("좋아요 상태", checkLike);
+  // console.log("좋아요 상태", checkLike);
   return (
     <Text _onClick={updateLike}>
       {checkLike ? (

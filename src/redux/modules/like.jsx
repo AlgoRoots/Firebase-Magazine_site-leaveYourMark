@@ -136,7 +136,7 @@ const getLikeFB = (post_id) => {
         docs.forEach((doc) => {
           user_list.push(doc.data().user_id);
         });
-        console.log("이 포스트에서 좋아요한 유저리스트 ", user_list);
+        //console.log("이 포스트에서 좋아요한 유저리스트 ", user_list);
 
         dispatch(setLike(post_id, user_list));
       })
@@ -159,7 +159,7 @@ export default handleActions(
     [UNDO_LIKE]: (state, action) =>
       produce(state, (draft) => {
         // 변수에 담으면 안됨..? 객체관련인가..
-        //let list = draft.list[action.payload.post_id];
+        // let list = draft.list[action.payload.post_id];
         // list = list.filter((user_id) => user_id !== action.payload.user_id);
         draft.list[action.payload.post_id] = draft.list[
           action.payload.post_id

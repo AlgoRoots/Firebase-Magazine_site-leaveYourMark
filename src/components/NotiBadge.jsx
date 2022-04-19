@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Notifications } from "@material-ui/icons";
-import { Badge } from "@material-ui/core";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
 
 import { realtime } from "../shared/firebase";
 import { useSelector } from "react-redux";
@@ -27,7 +27,7 @@ const NotiBadge = (props) => {
     const notiDB = realtime.ref(`noti/${user_id}`);
 
     notiDB.on("value", (snapshot) => {
-      console.log(snapshot.val());
+      //console.log(snapshot.val());
       setIsRead(snapshot.val().read);
     });
     // 구독하면 구독해제 필수
@@ -42,7 +42,7 @@ const NotiBadge = (props) => {
         onClick={notiCheck}
         variant="dot"
       >
-        <Notifications />
+        <NotificationsIcon />
       </Badge>
     </React.Fragment>
   );

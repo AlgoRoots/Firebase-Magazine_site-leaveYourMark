@@ -11,7 +11,7 @@ const PostList = (props) => {
   const post_list = useSelector((state) => state.post.list);
   const user_info = useSelector((state) => state.user.user);
   // console.log("post_list :!!", post_list);
-  console.log("user_info :!!", user_info);
+  // console.log("user_info :!!", user_info);
 
   // 무한스크롤
   const is_loading = useSelector((state) => state.post.is_loading);
