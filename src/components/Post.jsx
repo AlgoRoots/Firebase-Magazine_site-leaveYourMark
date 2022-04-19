@@ -4,6 +4,7 @@ import profile_img from "../algoroot_profile.jpg";
 // import Image from "../elements/Image";
 // import Text from "../elements/Text";
 import { Button, Grid, Image, Text } from "../elements";
+import PostCardFooter from "./PostCardFooter";
 import LikeBtn from "./LikeBtn";
 import { history } from "../redux/configureStore";
 

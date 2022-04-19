@@ -9,7 +9,7 @@ const Notification = (props) => {
   // 처음에는 빈 배열로 시작
   const [noti, setNoti] = React.useState([]);
   const user = useSelector((state) => state.user.user);
-  console.log("user 정보", user);
+  //console.log("user 정보", user);
   // 이 컴포넌트가 처음 로드 되었을 때 가지고 와야한다.
   React.useEffect(() => {
     // 처음에 user정보가 없으면 return해준다.
