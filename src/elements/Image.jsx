@@ -63,7 +63,7 @@ const AspectInner = styled.div`
       : `  background-position: 0 -120px;`}
 
   background-size: cover;
-  /* background-repeat: no-repeat; */
+  background-repeat: no-repeat;
 `;
 
 const ImageCircle = styled.div`
