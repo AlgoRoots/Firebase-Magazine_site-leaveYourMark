@@ -6,9 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Text } from "../elements";
 import { history } from "../redux/configureStore";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import post from "../redux/modules/post";
-import Required from "../pages/Required";
-import { apiKey } from "../shared/firebase";
 
 const LikeBtn = (props) => {
   // post, user id 알기위해 useState로 가져오기

@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Text, Button, Image, Input } from "../elements";
 import Upload from "../shared/Upload";
+import Required from "./Required";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as imageActions } from "../redux/modules/image";
@@ -76,38 +77,28 @@ const PostWrite = (props) => {
   };
 
   if (!is_login) {
-    return (
-      <Grid margin="100px 0" padding="16px" center>
-        <Text size="32px" bold>
-          앗 ! 잠깐!
-        </Text>
-        <Text size="16px">로그인 후에만 글을 쓸 수 있어요!</Text>
-        <Button
-          _onClick={() => {
-            history.replace("/");
-          }}
-        >
-          로그인 하러가기
-        </Button>
-      </Grid>
-    );
+    return <Required />;
   }
   return (
     <React.Fragment>
       <Grid padding="16px">
-        <Text margin="0px" size="36px" bold>
+        <Text margin="16px 0px" size="36px" bold>
           {is_edit ? "게시글 수정" : "게시글 작성"}
         </Text>
-        {/* Upload :  이미지 파일 따로 가공해 받아옴 */}
-        <Upload />
-        <Text size="24px" bold>
-          레이아웃 선택
-        </Text>
-        <select onChange={is_checked}>
-          <option value="default">Default</option>
-          <option value="left">Left</option>
-          <option value="right">Right</option>
-        </select>
+        <Grid is_flex>
+          {/* Upload :  이미지 파일 따로 가공해 받아옴 */}
+          <Upload />
+        </Grid>
+        <Grid is_flex padding="16px 0">
+          <Text size="24px" bold>
+            레이아웃 선택
+          </Text>
+          <select onChange={is_checked}>
+            <option value="default">Default</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </Grid>
       </Grid>
       {/*  */}
       {layout === "default" && (

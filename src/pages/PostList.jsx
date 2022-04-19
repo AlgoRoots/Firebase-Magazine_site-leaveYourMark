@@ -41,7 +41,7 @@ const PostList = (props) => {
           loading={is_loading}
         >
           {post_list.map((p, idx) => {
-            if (user_info && p.user_info.user_id === user_info.uid) {
+            if (user_info && p.user_info.user_id === user_info?.uid) {
               return (
                 <Grid
                   bg={"#fff"}

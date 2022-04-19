@@ -34,7 +34,7 @@ const Button = (props) => {
 
   return (
     <React.Fragment>
-      <ElButton {...styles} onClick={_onClick}>
+      <ElButton variant="contained" {...styles} onClick={_onClick}>
         {text ? text : children}
       </ElButton>
     </React.Fragment>
