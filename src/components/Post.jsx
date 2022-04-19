@@ -75,7 +75,6 @@ const Post = React.memo((props) => {
         {layout === "default" && (
           <>
             <Grid padding="16px">
-              <Text>기본 위아래</Text>
               <Text>{props.contents}</Text>
             </Grid>
 
