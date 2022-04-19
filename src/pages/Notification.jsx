@@ -37,14 +37,6 @@ const Notification = (props) => {
       }
     });
   }, [user]);
-  // let noti = [
-  //   { user_name: "aaaa", post_id: "post1", image_url: "" },
-  //   { user_name: "aaaa", post_id: "post2", image_url: "" },
-  //   { user_name: "aaaa", post_id: "post3", image_url: "" },
-  //   { user_name: "aaaa", post_id: "post4", image_url: "" },
-  //   { user_name: "aaaa", post_id: "post5", image_url: "" },
-  //   { user_name: "aaaa", post_id: "post6", image_url: "" },
-  // ];
 
   return (
     <React.Fragment>

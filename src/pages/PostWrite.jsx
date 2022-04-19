@@ -50,6 +50,7 @@ const PostWrite = (props) => {
 
   const [contents, setContents] = React.useState(_post ? _post.contents : "");
   const [layout, setLayout] = React.useState(_post ? _post.layout : "default");
+  //const [previewImg, setPreviewImg] = React.useState(is_edit? "http://via.placeholder.com/400x300" : "default");
 
   const addPost = () => {
     // addPostFB에 contents state값을 넘겨준다. // post.jsx > 66line => const _post~
@@ -70,7 +71,7 @@ const PostWrite = (props) => {
     }
   };
 
-  console.log("layout", layout);
+  // console.log("layout", layout);
 
   const changeContents = (e) => {
     setContents(e.target.value);
@@ -100,7 +101,7 @@ const PostWrite = (props) => {
           </select>
         </Grid>
       </Grid>
-      {/*  */}
+
       {layout === "default" && (
         <>
           <Grid>

@@ -30,7 +30,6 @@ const Post = React.memo((props) => {
     dispatch(postActions.deletePostFB(post_id));
   };
 
-  // 여기서 좋아요 취소 추가할 때 렌더링 안되서? filter안됨
   useEffect(() => {
     dispatch(likeActions.getLikeFB(post_id));
   }, []);
