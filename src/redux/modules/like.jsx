@@ -56,12 +56,10 @@ const addLikeFB = (post_id) => {
         .doc(post_id)
         .update({ like_cnt: increment })
         .then((_post) => {
-          // 좋아요 성공, postDB에도 업데이트 성공하면 addLike 함수 발동
           dispatch(addLike(post_id, user_info.uid));
 
           if (post) {
             dispatch(
-              // post 하나에대한 수정 : like + 1
               postActions.editPost(post_id, {
                 like_cnt: parseInt(post.like_cnt) + 1,
               })
@@ -76,8 +74,6 @@ const undoLikeFB = (post_id) => {
   return function (dispatch, getState, { history }) {
     const likeDB = firestore.collection("like");
     const user_info = getState().user.user;
-
-    // post_id같고, user_id도 같아야함
     likeDB
       .where("post_id", "==", post_id)
       .where("user_id", "==", user_info.uid)
@@ -88,24 +84,20 @@ const undoLikeFB = (post_id) => {
         likeDB
           .doc(id)
           .delete()
-          // like db에서 like 삭제 후 post에서 -1 해주기
           .then(() => {
             const postDB = firestore.collection("post");
             const post = getState().post.list.find((l) => l.id === post_id);
-            // like 개수 업데이트 : fb 문법
             const decrement = firebase.firestore.FieldValue.increment(-1);
 
             postDB
               .doc(post_id)
               .update({ like_cnt: decrement })
               .then((_post) => {
-                // 좋아요 취소 성공, postDB에도 업데이트 성공하면 undoLike 함수 발동
                 dispatch(undoLike(post_id, user_info.uid));
                 if (post) {
                   if (parseInt(post.like_cnt) === 0) return;
 
                   dispatch(
-                    // post 하나에대한 수정 : like - 1
                     postActions.editPost(post_id, {
                       like_cnt: parseInt(post.like_cnt) - 1,
                     })
@@ -158,9 +150,6 @@ export default handleActions(
       }),
     [UNDO_LIKE]: (state, action) =>
       produce(state, (draft) => {
-        // 변수에 담으면 안됨..? 객체관련인가..
-        // let list = draft.list[action.payload.post_id];
-        // list = list.filter((user_id) => user_id !== action.payload.user_id);
         draft.list[action.payload.post_id] = draft.list[
           action.payload.post_id
         ].filter((user_id) => user_id !== action.payload.user_id);

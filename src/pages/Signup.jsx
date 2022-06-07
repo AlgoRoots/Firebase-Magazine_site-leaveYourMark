@@ -6,7 +6,6 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { emailCheck } from "../shared/common";
 
 const Signup = (props) => {
-  // 로그인했을 시 홈으로 가기
   const { history } = props;
   const is_login = useSelector((state) => state.user.is_login);
 
@@ -32,7 +31,6 @@ const Signup = (props) => {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
       return;
     }
-    // user 리덕스 signupFB에 id, pwd, user_name 넘겨줌
     dispatch(userActions.signupFB(id, pwd, user_name));
   };
 

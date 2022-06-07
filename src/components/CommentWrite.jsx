@@ -20,10 +20,7 @@ const CommentWrite = (props) => {
       window.alert("댓글을 입력해주세요!");
       return;
     }
-    // 파이어스토어에 추가
     dispatch(commentActions.addCommentFB(post_id, comment_text));
-    // console.log(comment_text);
-    // 작성 버튼 누르면 value값 리셋하려고 value집어넣음
     setCommentText("");
   };
   return (

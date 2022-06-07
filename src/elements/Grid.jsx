@@ -5,7 +5,6 @@ const Grid = (props) => {
   const { is_flex, width, margin, padding, bg, children, center, _onClick } =
     props;
 
-  // children 왜 있지? 그리드가 밖에 있어서 안에 컴포넌트들이 들어간다는 의미인가
   const styles = {
     is_flex: is_flex,
     width: width,

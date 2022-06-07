@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import profile_img from "../algoroot_profile.jpg";
-// import Grid from "../elements/Grid";
-// import Image from "../elements/Image";
-// import Text from "../elements/Text";
 import { Button, Grid, Image, Text } from "../elements";
 import PostCardFooter from "./PostCardFooter";
 import LikeBtn from "./LikeBtn";
@@ -12,18 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as likeActions } from "../redux/modules/like";
 
-// 부모가 바뀔 때 자식은 왜 꼭 렌더링 되어야만 할까? 🤔
-// 부모 컴포넌트가 바뀔 때마다 바뀔 게 없는 컴포넌트까지 다시 렌더링하는 걸 막아주는 방법이 있으면 참 좋을 것 같죠?
-// → 사실 있습니다! 컴포넌트를 렌더링하고, 결과를 메모이제이션해두는 거예요!
-
-// React.memo를 사용해서 할 수 있어요!
-// useMemo가 렌더링 때마다 연산하지 않도록,
-// 연산된 값을 재 사용하는 훅이라면 memo는 컴포넌트의 리렌더링을 방지하는 함수예요!
 const Post = React.memo((props) => {
-  // console.log("hi!!! post!!");
   const dispatch = useDispatch();
-  // const like_list = useSelector((state) => state.like.list);
-  //console.log("like list!!!", like_list, typeof like_list);
   const post_id = props.id;
 
   const deletePost = () => {
@@ -46,7 +33,6 @@ const Post = React.memo((props) => {
           </Grid>
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>
-            {/* is_me user id 와 post의 userid 가 같으면 수정버튼 보여준다.  */}
             {props.is_me && (
               <Button
                 width="auto"

@@ -14,7 +14,7 @@ const Spinner = (props) => {
 };
 
 Spinner.defaultProps = {
-  type: "inline", // inline, page
+  type: "inline",
   is_dim: false,
   size: 60,
 };

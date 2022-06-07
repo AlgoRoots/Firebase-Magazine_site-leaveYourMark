@@ -67,7 +67,6 @@ const AspectInner = styled.div`
 `;
 
 const ImageCircle = styled.div`
-  // 변수 생성
   --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);

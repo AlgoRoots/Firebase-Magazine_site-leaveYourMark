@@ -1,28 +1,20 @@
 import React from "react";
 import { Grid, Text, Button } from "../elements";
 import { getCookie, deleteCookie } from "../shared/Cookie";
-
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
-
 import { history } from "../redux/configureStore";
 import { apiKey } from "../shared/firebase";
 
 import NotiBadge from "./NotiBadge";
 
-const Header = (props) => {
+const Header = () => {
   const dispatch = useDispatch();
-  // 로그인 유무에 따른 헤더 모양
   const is_login = useSelector((state) => state.user.is_login);
-  // const is = useSelector((state) => state.user?.user);
   const user = useSelector((state) => state.user.user);
-
   //  firebase apiKey
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
-
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
-
-  // console.log(is_session);
 
   return (
     <React.Fragment>
