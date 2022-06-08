@@ -33,24 +33,17 @@ const addLikeFB = (post_id) => {
   return function (dispatch, getState, { history }) {
     const likeDB = firestore.collection("like");
     const user_info = getState().user.user;
-
-    // like 하나에 대해 FB 에 보낼 정보
     let like = {
       post_id: post_id,
       user_id: user_info.uid,
       insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
       user_name: user_info.user_name,
     };
-    // Firestore에 like 정보 넣기
     likeDB.add(like).then((doc) => {
       const postDB = firestore.collection("post");
       like = { ...like, id: doc.id };
-
       const post = getState().post.list.find((l) => l.id === post_id);
-
-      // like 개수 업데이트 : fb 문법
       const increment = firebase.firestore.FieldValue.increment(1);
-      // like 에 id 넣기
 
       postDB
         .doc(post_id)
@@ -128,8 +121,6 @@ const getLikeFB = (post_id) => {
         docs.forEach((doc) => {
           user_list.push(doc.data().user_id);
         });
-        //console.log("이 포스트에서 좋아요한 유저리스트 ", user_list);
-
         dispatch(setLike(post_id, user_list));
       })
       .catch((error) => {

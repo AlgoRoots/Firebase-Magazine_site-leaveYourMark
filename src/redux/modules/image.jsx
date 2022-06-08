@@ -27,7 +27,6 @@ const uploadImageFB = (image) => {
       image
     );
     _upload.then((snapshot) => {
-      console.log(snapshot);
       console.log("Uploaded a file!");
       snapshot.ref.getDownloadURL().then((url) => {
         dispatch(uploadImage(url));

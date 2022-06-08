@@ -23,7 +23,7 @@ const Upload = (props) => {
   const uploadFB = () => {
     let image = fileInput.current.files[0];
     if (!image) {
-      alert("이미지 넣어주세요!");
+      alert("이미지를 넣어주세요!");
       return;
     }
     dispatch(imageActions.uploadImageFB(image));
